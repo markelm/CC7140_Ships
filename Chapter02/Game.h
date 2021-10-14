@@ -26,7 +26,9 @@ public:
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
-	float GetWindowWidth() const { return WindowWidth; }
+	float GetWindowWidth() const { return mWindowWidth; }
+
+	float GetWindowHeight() const { return mWindowHeight; }
 	
 	SDL_Texture* GetTexture(const std::string& fileName);
 private:
@@ -35,8 +37,9 @@ private:
 	void GenerateOutput();
 	void LoadData();
 	void UnloadData();
-	float WindowWidth;
-	float WindowHeight;
+
+	float mWindowWidth;
+	float mWindowHeight;
 	
 	// Map of textures loaded
 	std::unordered_map<std::string, SDL_Texture*> mTextures;

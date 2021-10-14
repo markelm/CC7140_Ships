@@ -6,19 +6,25 @@
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
 
-#include "Game.h"
-#include "SDL/SDL_image.h"
 #include <algorithm>
+#include "SDL/SDL_image.h"
+
 #include "Actor.h"
-#include "SpriteComponent.h"
-#include "Ship.h"
 #include "BGSpriteComponent.h"
+#include "Enemy.h"
+#include "Game.h"
+#include "Ship.h"
+#include "SpriteComponent.h"
 
 Game::Game()
 :mWindow(nullptr)
 ,mRenderer(nullptr)
 ,mIsRunning(true)
 ,mUpdatingActors(false)
+,mWindowWidth(920)
+,mWindowHeight(460)
+,mTicksCount(0)
+,mShip(nullptr)
 {
 	
 }
@@ -31,7 +37,10 @@ bool Game::Initialize()
 		return false;
 	}
 	
-	mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 2)", 100, 100, 1024, 768, 0);
+	mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 2)", 
+		100, 100, 
+		GetWindowWidth(), GetWindowHeight(), 
+		0);
 	if (!mWindow)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -158,14 +167,37 @@ void Game::LoadData()
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
 	mShip->SetScale(1.5f);
 
+
+	// Create enemies
+	std::vector<Enemy*> enemies = {
+		new Enemy(this),
+		new Enemy(this),
+		new Enemy(this)
+	};
+
+	std::vector<Vector2> positions = {
+		Vector2{2.0f * GetWindowWidth() / 3.0f, GetWindowHeight() / 3.0f},
+		Vector2{GetWindowWidth() / 2.0f, GetWindowHeight() / 2.0f},
+		Vector2{2.0f * GetWindowWidth() / 3.0f, 2.0f * GetWindowHeight() / 3.0f}
+	};
+
+	int i = 0;
+	for (Enemy* e : enemies)
+	{
+		e->SetPosition(positions[i]);
+		//e->SetScale(1.5f);
+
+		i++;			
+	}
+
 	//--------------------------------Criação do background----------------------------
 	// Create actor for the background (this doesn't need a subclass)
 	Actor* temp = new Actor(this);
-	temp->SetPosition(Vector2(512.0f, 384.0f));
+	temp->SetPosition(Vector2(GetWindowWidth() / 2.0f , GetWindowHeight() / 2.0f));
 	
 	// Create the "far back" background
 	BGSpriteComponent* bg = new BGSpriteComponent(temp);
-	bg->SetScreenSize(Vector2(1024.0f, 768.0f));//set the screen size for the background to fit in
+	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
 	//create a vector
 	std::vector<SDL_Texture*> bgtexs = {
 		GetTexture("Assets/Farback01.png"),
@@ -177,7 +209,7 @@ void Game::LoadData()
 	
 	// Create the closer background
 	bg = new BGSpriteComponent(temp, 50);
-	bg->SetScreenSize(Vector2(1024.0f, 768.0f));//set the screen size for the background to fit in
+	bg->SetScreenSize(Vector2(GetWindowWidth(), GetWindowHeight()));//set the screen size for the background to fit in
 	//create a vector
 	bgtexs = {
 		GetTexture("Assets/Stars.png"),

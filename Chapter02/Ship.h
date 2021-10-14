@@ -7,7 +7,10 @@
 // ----------------------------------------------------------------
 
 #pragma once
+
+#include "SDL/SDL.h"
 #include "Actor.h"
+
 class Ship : public Actor
 {
 	//as Ship will be controlled, it needs proper methods for it
@@ -17,7 +20,11 @@ public:
 	void ProcessKeyboard(const uint8_t* state);
 	float GetRightSpeed() const { return mRightSpeed; }
 	float GetDownSpeed() const { return mDownSpeed; }
+	float GetWidth() const { return mWidth; }
+	float GetHeight() const { return mHeight; }
 private:
 	float mRightSpeed;
 	float mDownSpeed;
+	float mWidth;
+	float mHeight;
 };

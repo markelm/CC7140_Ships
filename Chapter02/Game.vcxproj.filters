@@ -34,10 +34,13 @@
     <ClCompile Include="BGSpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shot.cpp">
+    <ClCompile Include="ShotComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,7 +69,8 @@
     <ClInclude Include="BGSpriteComponent.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shot.h" />
+    <ClInclude Include="ShotComponent.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
 </Project>

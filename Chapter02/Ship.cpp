@@ -25,6 +25,9 @@ Ship::Ship(Game* game)
 	};
 	//set the textures to the Ship vector of animated sprites
 	asc->SetAnimTextures(anims);
+	
+	mWidth = asc->GetTexWidth();
+	mHeight = asc->GetTexHeight();
 }
 
 //update the Ship following modifications made by the ProcessKeyboard
@@ -35,23 +38,28 @@ void Ship::UpdateActor(float deltaTime)
 	Vector2 pos = GetPosition();
 	pos.x += mRightSpeed * deltaTime;
 	pos.y += mDownSpeed * deltaTime;
+
+	float wWidth = GetGame()->GetWindowWidth();
+	float wHeight = GetGame()->GetWindowHeight();
+
 	// Restrict position to left half of screen
-	if (pos.x < 25.0f)
+	if (pos.x < GetWidth() / 2.0f)
 	{
-		pos.x = 25.0f;
+		pos.x = GetWidth() / 2.0f;
 	}
-	else if (pos.x > 500.0f)
+	else if (pos.x > wWidth / 2.0f)
 	{
-		pos.x = 500.0f;
+		pos.x = wWidth / 2.0f;
 	}
-	if (pos.y < 25.0f)
+	if (pos.y < GetHeight() / 2.0f)
 	{
-		pos.y = 25.0f;
+		pos.y = GetHeight() / 2.0f;
 	}
-	else if (pos.y > 743.0f)
+	else if (pos.y > wHeight - GetHeight() / 2.0f)
 	{
-		pos.y = 743.0f;
+		pos.y = wHeight - GetHeight() / 2.0f;
 	}
+
 	SetPosition(pos);
 }
 
