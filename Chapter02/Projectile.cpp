@@ -9,7 +9,7 @@ Projectile::Projectile(Game* game)
 
 {
 	SpriteComponent* sc = new SpriteComponent(this);
-	SDL_Texture* texture = game->GetTexture("Assests/Laser.png");
+	SDL_Texture* texture = game->GetTexture("Assets/Laser.png");
 	sc->SetTexture(texture);
 }
 
@@ -23,6 +23,5 @@ void Projectile::UpdateActor(float deltaTime) {
 		SetState(State::EDead);
 	}
 
-
-
+	SetPosition(pos);
 }

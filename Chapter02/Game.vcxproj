@@ -21,7 +21,7 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="ShotComponent.cpp" />
+    <ClCompile Include="ShootComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +34,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Ship.h" />
-    <ClInclude Include="ShotComponent.h" />
+    <ClInclude Include="ShootComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

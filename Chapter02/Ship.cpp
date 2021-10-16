@@ -9,6 +9,7 @@
 #include "Ship.h"
 #include "AnimSpriteComponent.h"
 #include "Game.h"
+#include "ShootComponent.h"
 
 Ship::Ship(Game* game)
 	:Actor(game)
@@ -28,12 +29,30 @@ Ship::Ship(Game* game)
 	
 	mWidth = asc->GetTexWidth();
 	mHeight = asc->GetTexHeight();
+
+	mShooter = new ShootComponent(this);
+	mCoolDown = 0;
 }
 
 //update the Ship following modifications made by the ProcessKeyboard
 void Ship::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
+	
+	if (mIsShooting)
+	{
+		mIsShooting = false;
+
+		if (mCoolDown < 1)
+		{
+			mCoolDown = 10;
+
+			mShooter->Shoot();
+		}
+		else mCoolDown -= 1;
+	}
+	else if (mCoolDown > 0) mCoolDown -= 1;
+
 	// Update position based on speeds and delta time
 	Vector2 pos = GetPosition();
 	pos.x += mRightSpeed * deltaTime;
@@ -87,5 +106,12 @@ void Ship::ProcessKeyboard(const uint8_t* state)
 	if (state[SDL_SCANCODE_W])
 	{
 		mDownSpeed -= 300.0f;
+	}
+
+	// shoot
+	if (state[SDL_SCANCODE_P])
+	{
+		mIsShooting = true;
+		//mShooter->Shoot();
 	}
 }

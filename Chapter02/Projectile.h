@@ -7,6 +7,7 @@ public:
     Projectile(class Game* game);
     void UpdateActor(float deltaTime) override;
     float GetSpeed() const { return speed; }
+
 private:
     float speed;
 };

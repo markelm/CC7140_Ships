@@ -10,6 +10,7 @@
 
 #include "SDL/SDL.h"
 #include "Actor.h"
+#include "ShootComponent.h"
 
 class Ship : public Actor
 {
@@ -27,4 +28,9 @@ private:
 	float mDownSpeed;
 	float mWidth;
 	float mHeight;
+
+	bool mIsShooting;
+	int mCoolDown;
+
+	ShootComponent* mShooter;
 };
