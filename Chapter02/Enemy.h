@@ -1,16 +1,15 @@
 #pragma once
-#include "Actor.h"
+#include "Projectile.h"
 class Enemy :
-    public Actor
+    public Projectile
 {
 public:
-    Enemy(class Game* game);
+    Enemy(class Game* game, float speed = -300.0f);
     void UpdateActor(float deltaTime) override;
-    float GetRightSpeed() const { return mRightSpeed; }
-    float GetDownSpeed() const { return mDownSpeed; }
+    //float GetRightSpeed() const { return mRightSpeed; }
+    //float GetDownSpeed() const { return mDownSpeed; }
     
 private:
-    float mRightSpeed;
-    float mDownSpeed;
+    //float mRightSpeed;
+    //float mDownSpeed;
 };
-

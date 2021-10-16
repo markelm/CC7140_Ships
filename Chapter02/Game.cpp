@@ -14,6 +14,7 @@
 #include "Enemy.h"
 #include "Game.h"
 #include "Ship.h"
+#include "ShootComponent.h"
 #include "SpriteComponent.h"
 
 Game::Game()
@@ -25,6 +26,7 @@ Game::Game()
 ,mWindowHeight(460)
 ,mTicksCount(0)
 ,mShip(nullptr)
+,mCoolDown(0)
 {
 	
 }
@@ -63,6 +65,8 @@ bool Game::Initialize()
 	LoadData();
 
 	mTicksCount = SDL_GetTicks();
+
+	mCoolDown = 5;
 	
 	return true;
 }
@@ -144,6 +148,18 @@ void Game::UpdateGame()
 	{
 		delete actor;
 	}
+
+	auto& spawner = mSpawners.front();
+	if (mCoolDown < 1)
+	{
+		mCoolDown = 200;
+
+		spawner->Shoot();
+		mSpawners.push(spawner);
+		mSpawners.pop();
+	}
+
+	if (mCoolDown > 0) mCoolDown -= 1;
 }
 
 void Game::GenerateOutput()
@@ -168,27 +184,19 @@ void Game::LoadData()
 	mShip->SetScale(1.5f);
 
 
-	// Create enemies
-	std::vector<Enemy*> enemies = {
-		new Enemy(this),
-		new Enemy(this),
-		new Enemy(this)
-	};
+	Actor* top = new Actor(this);
+	top->SetPosition(Vector2(GetWindowWidth(), GetWindowHeight() / 4.0f));
+	
+	Actor* middle = new Actor(this);
+	middle->SetPosition(Vector2(GetWindowWidth(), GetWindowHeight() / 2.0f));
 
-	std::vector<Vector2> positions = {
-		Vector2{2.0f * GetWindowWidth() / 3.0f, GetWindowHeight() / 3.0f},
-		Vector2{GetWindowWidth() / 2.0f, GetWindowHeight() / 2.0f},
-		Vector2{2.0f * GetWindowWidth() / 3.0f, 2.0f * GetWindowHeight() / 3.0f}
-	};
+	Actor* bottom = new Actor(this);
+	bottom->SetPosition(Vector2(GetWindowWidth(), 3.0f * GetWindowHeight() / 4.0f));
 
-	int i = 0;
-	for (Enemy* e : enemies)
-	{
-		e->SetPosition(positions[i]);
-		//e->SetScale(1.5f);
-
-		i++;			
-	}
+	// Create enemy spawners
+	mSpawners.push(new ShootComponent<Enemy>(top));
+	mSpawners.push(new ShootComponent<Enemy>(middle));
+	mSpawners.push(new ShootComponent<Enemy>(bottom));
 
 	//--------------------------------Criação do background----------------------------
 	// Create actor for the background (this doesn't need a subclass)

@@ -5,26 +5,29 @@
 #include "Projectile.h"
 #include "ShootComponent.h"
 
-ShootComponent::ShootComponent(class Actor* owner, int updateOrder)
+template<class P>
+ShootComponent<P>::ShootComponent(class Actor* owner, int updateOrder)
 	:Component(owner, updateOrder)
 {
 	// todo
 	//mOwner->GetGame()->AddShot(this);
 }
 
-ShootComponent::~ShootComponent()
+template<class P>
+ShootComponent<P>::~ShootComponent()
 {
 
 }
 
-void ShootComponent::Shoot()
+template<class P>
+void ShootComponent<P>::Shoot()
 {
 	// Create ship's projectile
-	Projectile *p = new Projectile(mOwner->GetGame());
+	P *p = new P(mOwner->GetGame());
 
 	Vector2 ship_pos = mOwner->GetPosition();
 
 	p->SetPosition(Vector2(ship_pos));
 	
-	p->SetScale(1.5f);
+	//p->SetScale(1.5f);
 }

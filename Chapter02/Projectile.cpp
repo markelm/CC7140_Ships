@@ -3,9 +3,9 @@
 #include "Game.h"
 
 
-Projectile::Projectile(Game* game)
+Projectile::Projectile(Game* game, float speed)
 	:Actor(game),
-	speed(300.0f)
+	mSpeed(speed)
 
 {
 	SpriteComponent* sc = new SpriteComponent(this);
@@ -17,7 +17,7 @@ void Projectile::UpdateActor(float deltaTime) {
 	Actor::UpdateActor(deltaTime);
 	Vector2 pos = GetPosition();
 
-	pos.x += speed * deltaTime;
+	pos.x += mSpeed * deltaTime;
 
 	if (pos.x > GetGame()->GetWindowWidth()) {
 		SetState(State::EDead);

@@ -10,6 +10,7 @@
 
 #include "SDL/SDL.h"
 #include "Actor.h"
+#include "Projectile.h"
 #include "ShootComponent.h"
 
 class Ship : public Actor
@@ -32,5 +33,5 @@ private:
 	bool mIsShooting;
 	int mCoolDown;
 
-	ShootComponent* mShooter;
+	ShootComponent<Projectile>* mShooter;
 };

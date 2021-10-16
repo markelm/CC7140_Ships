@@ -8,9 +8,13 @@
 
 #pragma once
 #include "SDL/SDL.h"
+#include <queue>
 #include <unordered_map>
 #include <string>
 #include <vector>
+
+#include "Enemy.h"
+#include "ShootComponent.h"
 
 class Game
 {
@@ -61,5 +65,8 @@ private:
 
 	// Game-specific
 	class Ship* mShip; // Player's ship
-};
 
+	std::queue<ShootComponent<Enemy>*> mSpawners;
+	bool mIsSpawning;
+	int mCoolDown;
+};

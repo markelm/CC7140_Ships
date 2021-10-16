@@ -9,6 +9,7 @@
 #include "Ship.h"
 #include "AnimSpriteComponent.h"
 #include "Game.h"
+#include "Projectile.h"
 #include "ShootComponent.h"
 
 Ship::Ship(Game* game)
@@ -30,7 +31,8 @@ Ship::Ship(Game* game)
 	mWidth = asc->GetTexWidth();
 	mHeight = asc->GetTexHeight();
 
-	mShooter = new ShootComponent(this);
+	mShooter = new ShootComponent<Projectile>(this);
+	mIsShooting = false;
 	mCoolDown = 0;
 }
 
