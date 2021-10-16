@@ -43,6 +43,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CollideComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -78,5 +81,6 @@
     <ClInclude Include="ShootComponent.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CollideComponent.h" />
   </ItemGroup>
 </Project>

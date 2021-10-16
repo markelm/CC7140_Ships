@@ -22,13 +22,10 @@ public:
 	void ProcessKeyboard(const uint8_t* state);
 	float GetRightSpeed() const { return mRightSpeed; }
 	float GetDownSpeed() const { return mDownSpeed; }
-	float GetWidth() const { return mWidth; }
-	float GetHeight() const { return mHeight; }
+
 private:
 	float mRightSpeed;
 	float mDownSpeed;
-	float mWidth;
-	float mHeight;
 
 	bool mIsShooting;
 	int mCoolDown;

@@ -4,7 +4,7 @@ class Enemy :
     public Projectile
 {
 public:
-    Enemy(class Game* game, float speed = -300.0f);
+    Enemy(class Game* game, bool timeWarp = true, float speed = -300.0f);
     void UpdateActor(float deltaTime) override;
     //float GetRightSpeed() const { return mRightSpeed; }
     //float GetDownSpeed() const { return mDownSpeed; }

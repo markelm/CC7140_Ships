@@ -16,6 +16,8 @@
 #include "Enemy.h"
 #include "ShootComponent.h"
 
+#include "CollideComponent.h"
+
 class Game
 {
 public:
@@ -24,8 +26,13 @@ public:
 	void RunLoop();
 	void Shutdown();
 
+	std::vector<class Actor*> GetActors() { return mActors; }
+
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
+
+	void AddCollider(class CollideComponent* collider);
+	void RemoveCollider(class CollideComponent* collider);
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
@@ -35,7 +42,14 @@ public:
 	float GetWindowHeight() const { return mWindowHeight; }
 	
 	SDL_Texture* GetTexture(const std::string& fileName);
+
+	void SetTimeWarp(bool tFlag) { isInTimeWarp = tFlag; };
+
+	bool GetTimeWarp() { return isInTimeWarp; };
+
+
 private:
+	std::vector<CollideComponent*> mColliders;
 	void ProcessInput();
 	void UpdateGame();
 	void GenerateOutput();
@@ -69,4 +83,6 @@ private:
 	std::queue<ShootComponent<Enemy>*> mSpawners;
 	bool mIsSpawning;
 	int mCoolDown;
+
+	bool isInTimeWarp;
 };

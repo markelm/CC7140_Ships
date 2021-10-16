@@ -3,14 +3,19 @@
 #include "Game.h"
 
 
-Projectile::Projectile(Game* game, float speed)
-	:Actor(game),
+Projectile::Projectile(Game* game, bool timeWarp, float speed)
+	:Actor(game, timeWarp),
 	mSpeed(speed)
 
 {
 	SpriteComponent* sc = new SpriteComponent(this);
 	SDL_Texture* texture = game->GetTexture("Assets/Laser.png");
 	sc->SetTexture(texture);
+
+	mCollider = new CollideComponent(this);
+
+	mWidth = sc->GetTexWidth();
+	mHeight = sc->GetTexHeight();
 }
 
 void Projectile::UpdateActor(float deltaTime) {
@@ -19,7 +24,8 @@ void Projectile::UpdateActor(float deltaTime) {
 
 	pos.x += mSpeed * deltaTime;
 
-	if (pos.x > GetGame()->GetWindowWidth()) {
+	if ((mSpeed > 0 && pos.x > GetGame()->GetWindowWidth()) || 
+		(mSpeed < 0 && pos.x < 0)) {
 		SetState(State::EDead);
 	}
 

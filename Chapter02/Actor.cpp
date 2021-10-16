@@ -11,12 +11,15 @@
 #include "Component.h"
 #include <algorithm>
 
-Actor::Actor(Game* game)
+Actor::Actor(Game* game, bool timeWarp)
 	:mState(EActive)//estado do ator, ativo ou desativado
 	, mPosition(Vector2::Zero)//coordenadas para posicionar o ator
 	, mScale(1.0f)//escala
 	, mRotation(0.0f)//parametros para rotação do ator, se necessário
 	, mGame(game)//aponta para a classe Game
+	, mAffectedByTimeWarp(timeWarp)
+	, mHeight(0.0f)
+	, mWidth(0.0f)
 {
 	mGame->AddActor(this);//adiciona esse ator ao jogo
 }

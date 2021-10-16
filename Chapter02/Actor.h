@@ -19,7 +19,7 @@ public:
 		EDead
 	};
 
-	Actor(class Game* game);//construtor e destrutor
+	Actor(class Game* game, bool timeWarp=true);//construtor e destrutor
 	virtual ~Actor();
 
 	// função de atualização, não sobrescreva
@@ -42,12 +42,18 @@ public:
 
 	class Game* GetGame() { return mGame; }
 
+	float GetWidth() const { return mWidth; }
+	float GetHeight() const { return mHeight; }
+
 
 	// insere e remove componentes
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
+
+	bool IsAffectedByTimeWarp() { return mAffectedByTimeWarp; };
+
 //variáveis do ator
-private:
+protected:
 	// estado
 	State mState;
 
@@ -59,4 +65,9 @@ private:
 	//vetor de componentes
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
+
+	float mWidth;
+	float mHeight;
+
+	bool mAffectedByTimeWarp;
 };

@@ -2,8 +2,8 @@
 #include "AnimSpriteComponent.h"
 #include "Game.h"
 
-Enemy::Enemy(Game* game, float speed)
-	:Projectile(game, speed)
+Enemy::Enemy(Game* game, bool timeWarp, float speed)
+	:Projectile(game, timeWarp, speed)
 {
 	AnimSpriteComponent* asc = new AnimSpriteComponent(this);
 	std::vector<SDL_Texture*> anims = {
@@ -16,6 +16,9 @@ Enemy::Enemy(Game* game, float speed)
 	};
 
 	asc->SetAnimTextures(anims);
+
+	mWidth = asc->GetTexWidth();
+	mHeight = asc->GetTexHeight();
 }
 
 void Enemy::UpdateActor(float deltaTime)

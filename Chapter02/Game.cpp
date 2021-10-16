@@ -122,7 +122,11 @@ void Game::UpdateGame()
 	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
-		actor->Update(deltaTime);
+		float newDelta = deltaTime;
+		if (GetTimeWarp() && actor->IsAffectedByTimeWarp()) {
+			newDelta = deltaTime * 0.1f;
+		}
+		actor->Update(newDelta);
 	}
 	mUpdatingActors = false;
 
@@ -160,6 +164,17 @@ void Game::UpdateGame()
 	}
 
 	if (mCoolDown > 0) mCoolDown -= 1;
+
+	for (auto collider : mColliders) {
+		for (auto& actor : mActors) {
+
+			if (std::find_if(mColliders.begin(), mColliders.end(), 
+				[&](CollideComponent* c) -> bool { return c->GetOwner() == actor; }) != mColliders.end() && 
+				(collider->Collide(actor))) {
+				actor->SetState(Actor::State::EDead);
+			}
+		}
+	}
 }
 
 void Game::GenerateOutput()
@@ -351,4 +366,32 @@ void Game::RemoveSprite(SpriteComponent* sprite)
 	// (We can't swap because it ruins ordering)
 	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
 	mSprites.erase(iter);
+}
+
+void Game::AddCollider(CollideComponent* collider)
+{
+	// Find the insertion point in the sorted vector
+	// (The first element with a higher draw order than me)
+	int myUpdateOrder = collider->GetUpdateOrder();
+	auto iter = mColliders.begin();
+	for (;
+		iter != mColliders.end();
+		++iter)
+	{
+		if (myUpdateOrder < (*iter)->GetUpdateOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mColliders.insert(iter, collider);
+}
+
+//remove sprite
+void Game::RemoveCollider(CollideComponent* collider)
+{
+	// (We can't swap because it ruins ordering)
+	auto iter = std::find(mColliders.begin(), mColliders.end(), collider);
+	mColliders.erase(iter);
 }

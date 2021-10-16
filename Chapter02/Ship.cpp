@@ -13,7 +13,7 @@
 #include "ShootComponent.h"
 
 Ship::Ship(Game* game)
-	:Actor(game)
+	:Actor(game, false)
 	,mRightSpeed(0.0f)
 	,mDownSpeed(0.0f)
 {
@@ -27,7 +27,7 @@ Ship::Ship(Game* game)
 	};
 	//set the textures to the Ship vector of animated sprites
 	asc->SetAnimTextures(anims);
-	
+
 	mWidth = asc->GetTexWidth();
 	mHeight = asc->GetTexHeight();
 
@@ -115,5 +115,11 @@ void Ship::ProcessKeyboard(const uint8_t* state)
 	{
 		mIsShooting = true;
 		//mShooter->Shoot();
+	}
+
+	//Time Warp
+	if (state[SDL_SCANCODE_T])
+	{
+		GetGame()->SetTimeWarp(true);
 	}
 }
