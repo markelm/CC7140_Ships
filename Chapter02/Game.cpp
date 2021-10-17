@@ -6,6 +6,8 @@
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
 
+#define BUFFSIZE 1024
+
 #include <algorithm>
 #include "SDL/SDL_image.h"
 
@@ -16,17 +18,19 @@
 #include "Ship.h"
 #include "ShootComponent.h"
 #include "SpriteComponent.h"
+#include "TextComponent.h"
 
 Game::Game()
-:mWindow(nullptr)
-,mRenderer(nullptr)
-,mIsRunning(true)
-,mUpdatingActors(false)
-,mWindowWidth(920)
-,mWindowHeight(460)
-,mTicksCount(0)
-,mShip(nullptr)
-,mCoolDown(0)
+	:mWindow(nullptr)
+	, mRenderer(nullptr)
+	, mIsRunning(true)
+	, mUpdatingActors(false)
+	, mWindowWidth(920)
+	, mWindowHeight(460)
+	, mTicksCount(0)
+	, mShip(nullptr)
+	, mCoolDown(0)
+	, mScore(0)
 {
 	
 }
@@ -175,6 +179,8 @@ void Game::UpdateGame()
 			}
 		}
 	}
+
+	mText->SetText(mRenderer, "\nMissed Alien Ships: %3d", mScore);
 }
 
 void Game::GenerateOutput()
@@ -187,8 +193,9 @@ void Game::GenerateOutput()
 	{
 		sprite->Draw(mRenderer);
 	}
-
 	SDL_RenderPresent(mRenderer);
+
+	
 }
 
 void Game::LoadData()
@@ -197,6 +204,8 @@ void Game::LoadData()
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(100.0f, 384.0f));
 	mShip->SetScale(1.5f);
+
+	mFont = TTF_OpenFont("VT323-Regular.ttf", 24);
 
 
 	Actor* top = new Actor(this);
@@ -241,6 +250,9 @@ void Game::LoadData()
 	//set this vector to the background component
 	bg->SetBGTextures(bgtexs);
 	bg->SetScrollSpeed(-200.0f);
+
+	mText = new TextComponent(temp);
+	mText->SetText(mRenderer, "");
 }
 
 void Game::UnloadData()
@@ -394,4 +406,36 @@ void Game::RemoveCollider(CollideComponent* collider)
 	// (We can't swap because it ruins ordering)
 	auto iter = std::find(mColliders.begin(), mColliders.end(), collider);
 	mColliders.erase(iter);
+}
+
+void Game::DrawText(const char* fmt, ...) {
+	char buffer[BUFFSIZE];
+
+	va_list rest;
+	va_start(rest, fmt);
+
+	SDL_vsnprintf(buffer, BUFFSIZE, fmt, rest);
+
+	va_end(rest);
+
+	SDL_Color color = {
+		255, 255, 255, 255
+	};
+
+	SDL_Surface* text = TTF_RenderText_Solid(mFont, buffer, color);
+
+	SDL_Texture* textureText = SDL_CreateTextureFromSurface(mRenderer, text);
+
+	SDL_Rect dest = { 0 };
+
+	SDL_QueryTexture(textureText, NULL, NULL, &dest.w, &dest.h);
+
+	SDL_FreeSurface(text);
+
+	dest.x = GetWindowWidth()/2.0f;
+	dest.y = GetWindowHeight()/2.0f;
+
+	SDL_RenderCopy(mRenderer, textureText, NULL, &dest);
+
+	SDL_DestroyTexture(textureText);
 }

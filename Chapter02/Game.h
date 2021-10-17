@@ -12,11 +12,14 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <cstdarg>
 
 #include "Enemy.h"
 #include "ShootComponent.h"
 
 #include "CollideComponent.h"
+#include "SDL/SDL_ttf.h"
+#include "TextComponent.h"
 
 class Game
 {
@@ -47,6 +50,11 @@ public:
 
 	bool GetTimeWarp() { return isInTimeWarp; };
 
+	void DrawText(const char* fmt, ...);
+
+	void IncrementScore() { mScore++; };
+
+	TTF_Font*  GetFont() { return mFont; }
 
 private:
 	std::vector<CollideComponent*> mColliders;
@@ -85,4 +93,9 @@ private:
 	int mCoolDown;
 
 	bool isInTimeWarp;
+
+	TTF_Font* mFont;
+	int mScore;
+
+	TextComponent* mText;
 };

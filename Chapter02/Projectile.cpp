@@ -27,6 +27,9 @@ void Projectile::UpdateActor(float deltaTime) {
 	if ((mSpeed > 0 && pos.x > GetGame()->GetWindowWidth()) || 
 		(mSpeed < 0 && pos.x < 0)) {
 		SetState(State::EDead);
+		if (mSpeed < 0) {
+			GetGame()->IncrementScore();
+		}
 	}
 
 	SetPosition(pos);
